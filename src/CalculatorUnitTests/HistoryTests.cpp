@@ -39,10 +39,10 @@ namespace CalculatorFunctionalTests
         TEST_METHOD(TestHistoryEmpty);
 
     private:
-        HistoryViewModel^ m_historyViewModel;
-        StandardCalculatorViewModel^ m_standardViewModel;
+        HistoryViewModel ^ m_historyViewModel;
+        StandardCalculatorViewModel ^ m_standardViewModel;
 
-        void Initialize(unsigned int windowId = 0)
+        void Initialize()
         {
             m_standardViewModel = ref new StandardCalculatorViewModel();
             m_standardViewModel->IsStandard = true;
@@ -50,7 +50,7 @@ namespace CalculatorFunctionalTests
             m_historyViewModel->SetCalculatorDisplay(m_standardViewModel->m_calculatorDisplay);
         }
 
-        void Cleanup(unsigned int windowId = 0)
+        void Cleanup()
         {
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeBasic);
             m_historyViewModel->OnClearCommand(nullptr);
@@ -59,9 +59,9 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.Reset();
         }
 
-        bool IsHistoryContainerEmpty(_In_ String^ historyContainerKey)
+        bool IsHistoryContainerEmpty(_In_ String ^ historyContainerKey)
         {
-            ApplicationDataContainer^ localSettings = ApplicationData::Current->LocalSettings;
+            ApplicationDataContainer ^ localSettings = ApplicationData::Current->LocalSettings;
             return !(localSettings->Containers->HasKey(historyContainerKey));
         }
 
@@ -75,13 +75,13 @@ namespace CalculatorFunctionalTests
         {
             m_standardViewModel->SetHistoryExpressionDisplay(e->GetTokens(), e->GetCommands());
             m_standardViewModel->SetExpressionDisplay(e->GetTokens(), e->GetCommands());
-            m_standardViewModel->SetPrimaryDisplay(e->Result->Data(), false/*IsError*/);
+            m_standardViewModel->SetPrimaryDisplay(e->Result->Data(), false /*IsError*/);
             m_standardViewModel->IsFToEEnabled = false;
         }
 
-        void AddSingleHistoryItem(unsigned int windowId = 0)
+        void AddSingleHistoryItem()
         {
-            Initialize(windowId);
+            Initialize();
             int initialSize = m_historyViewModel->ItemSize;
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -89,33 +89,32 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
             int sizeAfterItemAdd = m_historyViewModel->ItemSize;
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
-            String^ expression = UtfUtils::LRO + L"1   +   8 =" + UtfUtils::PDF;
-            String ^result = StringReference(L"9");
+            String ^ expression = UtfUtils::LRO + L"1   +   8 =" + UtfUtils::PDF;
+            String ^ result = StringReference(L"9");
             VERIFY_ARE_EQUAL(initialSize + 1, sizeAfterItemAdd);
             VERIFY_ARE_EQUAL(expression, StringReference(historyItem->historyItemVector.expression.c_str()));
             VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void AddMaxHistoryItems(unsigned int windowId = 0)
+        void AddMaxHistoryItems()
         {
-            Initialize(windowId);
-            int initialSize = m_historyViewModel->ItemSize;
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
-            for (int i = 1; i < m_standardViewModel->m_standardCalculatorManager.MaxHistorySize(); i++)
+            for (size_t i = 1; i < m_standardViewModel->m_standardCalculatorManager.MaxHistorySize(); i++)
             {
                 m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
                 m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
                 m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command2);
                 m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
             }
-            VERIFY_ARE_EQUAL(m_historyViewModel->ItemSize, m_standardViewModel->m_standardCalculatorManager.MaxHistorySize());
-            String ^expression = UtfUtils::LRO + L"1   +   1 =" + UtfUtils::PDF;
+            VERIFY_ARE_EQUAL((size_t)m_historyViewModel->ItemSize, m_standardViewModel->m_standardCalculatorManager.MaxHistorySize());
+            String ^ expression = UtfUtils::LRO + L"1   +   1 =" + UtfUtils::PDF;
             int output = 2;
-            String ^result = output.ToString();
+            String ^ result = output.ToString();
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
             VERIFY_ARE_EQUAL(expression, StringReference(historyItem->historyItemVector.expression.c_str()));
             VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
@@ -123,19 +122,19 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command5);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
-            VERIFY_ARE_EQUAL(m_historyViewModel->ItemSize, m_standardViewModel->m_standardCalculatorManager.MaxHistorySize());
+            VERIFY_ARE_EQUAL((size_t)m_historyViewModel->ItemSize, m_standardViewModel->m_standardCalculatorManager.MaxHistorySize());
             expression = UtfUtils::LRO + L"1   +   2 =" + UtfUtils::PDF;
             output = 3;
             result = output.ToString();
             historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
             VERIFY_ARE_EQUAL(expression, StringReference(historyItem->historyItemVector.expression.c_str()));
             VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void ReloadHistory(unsigned int windowId = 0)
+        void ReloadHistory()
         {
-            Initialize(windowId);
+            Initialize();
 
             m_standardViewModel->m_standardCalculatorManager.Reset();
             int scientificItems = 5;
@@ -168,7 +167,7 @@ namespace CalculatorFunctionalTests
                 wstring expr = L"1   +   " + wstring(i.ToString()->Data()) + L" =";
                 expr = UtfUtils::LRO + expr + UtfUtils::PDF;
                 int output = 1 + i;
-                String ^result = output.ToString();
+                String ^ result = output.ToString();
                 auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(i);
                 VERIFY_ARE_EQUAL(expr, historyItem->historyItemVector.expression);
                 VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
@@ -182,17 +181,17 @@ namespace CalculatorFunctionalTests
                 wstring expr = L"1   +   " + wstring(i.ToString()->Data()) + L" =";
                 expr = UtfUtils::LRO + expr + UtfUtils::PDF;
                 int output = 1 + i;
-                String ^result = output.ToString();
+                String ^ result = output.ToString();
                 auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(i);
                 VERIFY_ARE_EQUAL(expr, historyItem->historyItemVector.expression);
                 VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
             }
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void ClearHistory(unsigned int windowId = 0)
+        void ClearHistory()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -207,12 +206,12 @@ namespace CalculatorFunctionalTests
             VERIFY_ARE_EQUAL(0, m_historyViewModel->ItemSize);
             VERIFY_IS_TRUE(IsHistoryContainerEmpty(GetHistoryContainerKeyHelper(CM_STD)));
             VERIFY_IS_TRUE(IsHistoryContainerEmpty(GetHistoryContainerKeyHelper(CM_SCI)));
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void SerializeDeSerializeHistoryItem(unsigned int windowId = 0)
+        void SerializeDeSerializeHistoryItem()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -222,13 +221,17 @@ namespace CalculatorFunctionalTests
             m_historyViewModel->SaveHistory();
             m_historyViewModel->ReloadHistory(ViewMode::Scientific);
             auto itemAfterSerializeDeserialize = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
-            VERIFY_IS_TRUE((itemBeforeSerializeDeserialize->historyItemVector.expression == itemAfterSerializeDeserialize->historyItemVector.expression) && (itemBeforeSerializeDeserialize->historyItemVector.result == itemAfterSerializeDeserialize->historyItemVector.result) && (itemBeforeSerializeDeserialize->historyItemVector.spCommands == itemAfterSerializeDeserialize->historyItemVector.spCommands) && (itemBeforeSerializeDeserialize->historyItemVector.spTokens == itemAfterSerializeDeserialize->historyItemVector.spTokens));
-            Cleanup(windowId);
+            VERIFY_IS_TRUE(
+                (itemBeforeSerializeDeserialize->historyItemVector.expression == itemAfterSerializeDeserialize->historyItemVector.expression)
+                && (itemBeforeSerializeDeserialize->historyItemVector.result == itemAfterSerializeDeserialize->historyItemVector.result)
+                && (itemBeforeSerializeDeserialize->historyItemVector.spCommands == itemAfterSerializeDeserialize->historyItemVector.spCommands)
+                && (itemBeforeSerializeDeserialize->historyItemVector.spTokens == itemAfterSerializeDeserialize->historyItemVector.spTokens));
+            Cleanup();
         }
 
-        void SaveAndReloadHistory(unsigned int windowid = 0)
+        void SaveAndReloadHistory()
         {
-            Initialize(windowid);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -250,7 +253,7 @@ namespace CalculatorFunctionalTests
             wstring expr = L"1   +   8 =";
             // add double quotes around the expression
             expr = UtfUtils::LRO + expr + UtfUtils::PDF;
-            String ^result = StringReference(L"9");
+            String ^ result = StringReference(L"9");
             int itemsAfterSaveAndReload = m_historyViewModel->ItemSize;
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
 
@@ -258,17 +261,18 @@ namespace CalculatorFunctionalTests
             VERIFY_ARE_EQUAL(result, StringReference(historyItem->historyItemVector.result.c_str()));
             VERIFY_ARE_NOT_EQUAL(itemsBeforeSaveAndReload, itemsAfterSaveAndReload);
             VERIFY_ARE_EQUAL(itemsBeforeSaveAndReload, itemsAfterSaveAndReload + 1);
-            Cleanup(windowid);
+            Cleanup();
         }
 
-        void HistoryItemWithPrettyExpressions(unsigned int windowId = 0)
+        void HistoryItemWithPrettyExpressions()
         {
-            Initialize(windowId);
-            Command commands[] = { Command::CommandSIN, Command::CommandCOS, Command::CommandTAN, Command::CommandASIN, Command::CommandACOS, Command::CommandATAN };
+            Initialize();
+            Command commands[] = { Command::CommandSIN,  Command::CommandCOS,  Command::CommandTAN,
+                                   Command::CommandASIN, Command::CommandACOS, Command::CommandATAN };
             Command mode[] = { Command::CommandDEG, Command::CommandRAD, Command::CommandGRAD };
             int modes = sizeof(mode) / sizeof(Command);
             int commandsSize = sizeof(commands) / sizeof(Command);
-            ResourceLoader^ m_uiResourceLoader = ResourceLoader::GetForViewIndependentUse(L"CEngineStrings");
+            ResourceLoader ^ m_uiResourceLoader = ResourceLoader::GetForViewIndependentUse(L"CEngineStrings");
             int itemIndex = 0;
             int commandResource = 67;
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
@@ -281,7 +285,7 @@ namespace CalculatorFunctionalTests
                     m_standardViewModel->m_standardCalculatorManager.SendCommand(commands[command]);
                     m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
                     auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(itemIndex);
-                    String^ expression = m_uiResourceLoader->GetString(commandResource.ToString());
+                    String ^ expression = m_uiResourceLoader->GetString(commandResource.ToString());
                     expression += L"( 1 ) =";
                     wstring expr = wstring(expression->Data());
                     expr = UtfUtils::LRO + expr + UtfUtils::PDF;
@@ -290,13 +294,13 @@ namespace CalculatorFunctionalTests
                     itemIndex++;
                 }
             }
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void HistoryItemWithPrettyExpressionsMixedRadix(unsigned int windowId = 0)
+        void HistoryItemWithPrettyExpressionsMixedRadix()
         {
-            Initialize(windowId);
-            ResourceLoader^ m_uiResourceLoader = ResourceLoader::GetForViewIndependentUse(L"CEngineStrings");
+            Initialize();
+            ResourceLoader ^ m_uiResourceLoader = ResourceLoader::GetForViewIndependentUse(L"CEngineStrings");
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandDEG);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
@@ -311,7 +315,7 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandSIN);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
-            String^ expression = m_uiResourceLoader->GetString(L"67");
+            String ^ expression = m_uiResourceLoader->GetString(L"67");
             expression += L"( 1 )   +   ";
             expression += m_uiResourceLoader->GetString(L"73");
             expression += L"( 1 )   +   ";
@@ -321,12 +325,12 @@ namespace CalculatorFunctionalTests
             expr = UtfUtils::LRO + expr + UtfUtils::PDF;
             VERIFY_ARE_EQUAL(historyItem->historyItemVector.expression, expr);
 
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void HistoryItemClicked(unsigned int windowId = 0)
+        void HistoryItemClicked()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -335,9 +339,10 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command3);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
-            String^ expression = StringReference(historyItem->historyItemVector.expression.c_str());
-            String^ result = StringReference(historyItem->historyItemVector.result.c_str());
-            HistoryItemViewModel ^ item = ref new HistoryItemViewModel(expression, result, historyItem->historyItemVector.spTokens, historyItem->historyItemVector.spCommands);
+            String ^ expression = StringReference(historyItem->historyItemVector.expression.c_str());
+            String ^ result = StringReference(historyItem->historyItemVector.result.c_str());
+            HistoryItemViewModel ^ item =
+                ref new HistoryItemViewModel(expression, result, historyItem->historyItemVector.spTokens, historyItem->historyItemVector.spCommands);
             MockOnHistoryItemClicked(item);
             VERIFY_ARE_EQUAL(StringReference(L"9"), m_standardViewModel->DisplayValue);
             VERIFY_ARE_EQUAL(StringReference(L"1"), m_standardViewModel->ExpressionTokens->GetAt(0)->Token);
@@ -348,12 +353,12 @@ namespace CalculatorFunctionalTests
             VERIFY_ARE_EQUAL(StringReference(L" "), m_standardViewModel->ExpressionTokens->GetAt(5)->Token);
             VERIFY_ARE_EQUAL(StringReference(L"+"), m_standardViewModel->ExpressionTokens->GetAt(6)->Token);
             VERIFY_ARE_EQUAL(StringReference(L" "), m_standardViewModel->ExpressionTokens->GetAt(7)->Token);
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void HistoryItemLoadAndContinueCalculation(unsigned int windowId = 0)
+        void HistoryItemLoadAndContinueCalculation()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeBasic);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -363,9 +368,10 @@ namespace CalculatorFunctionalTests
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
 
             auto historyItem = m_standardViewModel->m_standardCalculatorManager.GetHistoryItem(0);
-            String^ expression = StringReference(historyItem->historyItemVector.expression.c_str());
-            String^ result = StringReference(historyItem->historyItemVector.result.c_str());
-            HistoryItemViewModel ^ item = ref new HistoryItemViewModel(expression, result, historyItem->historyItemVector.spTokens, historyItem->historyItemVector.spCommands);
+            String ^ expression = StringReference(historyItem->historyItemVector.expression.c_str());
+            String ^ result = StringReference(historyItem->historyItemVector.result.c_str());
+            HistoryItemViewModel ^ item =
+                ref new HistoryItemViewModel(expression, result, historyItem->historyItemVector.spTokens, historyItem->historyItemVector.spCommands);
             MockOnHistoryItemClicked(item);
 
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
@@ -385,17 +391,17 @@ namespace CalculatorFunctionalTests
             item = ref new HistoryItemViewModel(expression, result, historyItem->historyItemVector.spTokens, historyItem->historyItemVector.spCommands);
             MockOnHistoryItemClicked(item);
             VERIFY_ARE_EQUAL(StringReference(L"14"), m_standardViewModel->DisplayValue);
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void DisplayValueAutomationNames(unsigned int windowId = 0)
+        void DisplayValueAutomationNames()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command8);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
-            String ^expression = StringReference(L"Display is 9");
+            String ^ expression = StringReference(L"Display is 9");
             VERIFY_ARE_EQUAL(expression, m_standardViewModel->CalculationResultAutomationName);
 
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
@@ -414,20 +420,20 @@ namespace CalculatorFunctionalTests
             expression = StringReference(L"Display is 3");
             VERIFY_ARE_EQUAL(expression, m_standardViewModel->CalculationResultAutomationName);
 
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void RadixAutomationName(unsigned int windowId = 0)
+        void RadixAutomationName()
         {
-            Initialize(windowId);
+            Initialize();
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeProgrammer);
             m_standardViewModel->IsProgrammer = true;
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command1);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandADD);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::Command7);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::CommandEQU);
-            String ^expression = L"HexaDecimal" + L" 8";
-            String ^result = L"HexaDecimal " + Utils::GetStringValue(m_standardViewModel->HexDisplayValue);
+            String ^ expression = L"HexaDecimal" + L" 8";
+            String ^ result = L"HexaDecimal " + Utils::GetStringValue(m_standardViewModel->HexDisplayValue);
             VERIFY_ARE_EQUAL(expression, result);
             expression = StringReference(L"Octal 10");
             result = L"Octal " + Utils::GetStringValue(m_standardViewModel->OctalDisplayValue);
@@ -435,27 +441,26 @@ namespace CalculatorFunctionalTests
             expression = StringReference(L"Binary 1000");
             result = L"Binary " + Utils::GetStringValue(m_standardViewModel->BinaryDisplayValue);
             VERIFY_ARE_EQUAL(expression, result);
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void HistoryEmpty(unsigned int windowId = 0)
+        void HistoryEmpty()
         {
-            Initialize(windowId);
+            Initialize();
             VERIFY_ARE_EQUAL(0, m_historyViewModel->ItemSize);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             VERIFY_ARE_EQUAL(0, m_historyViewModel->ItemSize);
-            Cleanup(windowId);
+            Cleanup();
         }
 
-        void HistoryClearCommandWithEmptyHistory(unsigned int windowId = 0)
+        void HistoryClearCommandWithEmptyHistory()
         {
-            Initialize(windowId);
+            Initialize();
             VERIFY_ARE_EQUAL(0, m_historyViewModel->ItemSize);
             m_standardViewModel->m_standardCalculatorManager.SendCommand(Command::ModeScientific);
             m_historyViewModel->OnClearCommand(nullptr);
             VERIFY_ARE_EQUAL(0, m_historyViewModel->ItemSize);
-            Cleanup(windowId);
-
+            Cleanup();
         }
     };
 

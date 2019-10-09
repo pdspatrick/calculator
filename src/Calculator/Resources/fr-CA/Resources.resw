@@ -119,15 +119,27 @@
   </resheader>
   <data name="AppName" xml:space="preserve">
     <value>Calculatrice</value>
-    <comment>{@Appx_ShortDisplayName@}{StringCategory="Feature Title"}</comment>
+    <comment>{@Appx_ShortDisplayName@}{StringCategory="Feature Title"} This is the title of the official application when published through Windows Store.</comment>
+  </data>
+  <data name="DevAppName" xml:space="preserve">
+    <value>Calculatrice [Dév]</value>
+    <comment>{@Appx_ShortDisplayName@}{StringCategory="Feature Title"} This is the name of the application when built by a user via GitHub. We use a different name to make it easier for users to distinguish the apps when both this version and the Store version are installed on the same device.</comment>
   </data>
   <data name="AppStoreName" xml:space="preserve">
     <value>Calculatrice Windows</value>
     <comment>{@Appx_DisplayName@}{StringCategory="Feature Title"} Name that shows up in the app store. It contains "Windows" to distinguish it from 3rd party calculator apps.</comment>
   </data>
+  <data name="DevAppStoreName" xml:space="preserve">
+    <value>Calculatrice Windows [Dév]</value>
+    <comment>{@Appx_DisplayName@}{StringCategory="Feature Title"} Name that shows up in the app store. It contains "Windows" to distinguish it from 3rd party calculator apps. This is the the version of the name used when the app is built by a user via GitHub.</comment>
+  </data>
   <data name="AppDescription" xml:space="preserve">
     <value>Calculatrice</value>
-    <comment>{@Appx_Description@}</comment>
+    <comment>{@Appx_Description@} This description is used for the official application when published through Windows Store.</comment>
+  </data>
+  <data name="DevAppDescription" xml:space="preserve">
+    <value>Calculatrice [Dév]</value>
+    <comment>{@Appx_Description@} This is the description of the application when built by a user via GitHub. We use a different description to make it easier for users to distinguish the apps when both this version and the Store version are installed on the same device.</comment>
   </data>
   <data name="copyMenuItem" xml:space="preserve">
     <value>Copier</value>
@@ -421,6 +433,14 @@
     <value>Fermer le menu volant de la mémoire</value>
     <comment>This is the automation name and label for the memory button when the memory flyout is open.</comment>
   </data>
+  <data name="AlwaysOnTop_Enter" xml:space="preserve">
+    <value>Laisser en haut</value>
+    <comment>This is the tool tip automation name for the always-on-top button when out of always-on-top mode.</comment>
+  </data>
+  <data name="AlwaysOnTop_Exit" xml:space="preserve">
+    <value>Revenir à l’affichage plein écran</value>
+    <comment>This is the tool tip automation name for the always-on-top button when in always-on-top mode.</comment>
+  </data>
   <data name="MemoryButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Mémoire</value>
     <comment>This is the tool tip automation name for the memory button.</comment>
@@ -532,6 +552,10 @@
   <data name="Format_CalculatorResults" xml:space="preserve">
     <value>L'affichage est %1</value>
     <comment>{Locked="%1"}. Screen reader prompt for the Calculator results text block. %1 = Localized display value, e.g. "50".</comment>
+  </data>
+  <data name="Format_CalculatorAlwaysOnTopResults" xml:space="preserve">
+    <value>L’expression est %1, l’entrée actuelle est %2</value>
+    <comment>{Locked="%1","%2"}. Screen reader prompt for the Calculator always-on-top expression. %1 = Expression, e.g. "50 + 2 - 60 +", %2 = Localized display value, e.g. "50".</comment>
   </data>
   <data name="Format_CalculatorResults_Decimal" xml:space="preserve">
     <value>L’affichage est %1 point</value>
@@ -897,6 +921,14 @@
     <value>Parenthèse droite</value>
     <comment>Screen reader prompt for the Calculator ")" button on the scientific operator keypad</comment>
   </data>
+  <data name="Format_OpenParenthesisCountAutomationNamePrefix" xml:space="preserve">
+    <value>Nombre de parenthèses ouvertes : %1</value>
+    <comment>{Locked="%1"} Screen reader prompt for the Calculator "(" button on the scientific and programmer operator keypad. %1 is the localized count of open parenthesis, e.g. "2".</comment>
+  </data>
+  <data name="NoRightParenthesisAdded_Announcement" xml:space="preserve">
+    <value>Aucune parenthèse ouverte ne doit être fermée.</value>
+    <comment>{Locked="%1"} Screen reader prompt for the Calculator when the ")" button on the scientific and programmer operator keypad cannot be added to the equation. e.g. "1+)".</comment>
+  </data>
   <data name="ftoeButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Notation scientifique</value>
     <comment>Screen reader prompt for the Calculator F-E the scientific operator keypad</comment>
@@ -1036,6 +1068,22 @@
   <data name="Categories.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Liste déroulante des catégories</value>
     <comment>Screen reader prompt for the Categories dropdown field.</comment>
+  </data>
+  <data name="EnterAlwaysOnTopButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Laisser en haut</value>
+    <comment>Screen reader prompt for the Always-on-Top button when in normal mode.</comment>
+  </data>
+  <data name="ExitAlwaysOnTopButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Revenir à l’affichage plein écran</value>
+    <comment>Screen reader prompt for the Always-on-Top button when in Always-on-Top mode.</comment>
+  </data>
+  <data name="EnterAlwaysOnTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Laisser en haut</value>
+    <comment>This is the tool tip automation name for the Always-on-Top button when in normal mode.</comment>
+  </data>
+  <data name="ExitAlwaysOnTopButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Revenir à l’affichage plein écran</value>
+    <comment>This is the tool tip automation name for the Always-on-Top button when in Always-on-Top mode.</comment>
   </data>
   <data name="Format_ValueFrom" xml:space="preserve">
     <value>Convertir %1 %2</value>
@@ -2265,9 +2313,9 @@
     <value>Énoncé de confidentialité Microsoft</value>
     <comment>Displayed on a link to the Microsoft Privacy Statement on the About panel</comment>
   </data>
-  <data name="AboutControlCopyright.Text" xml:space="preserve">
-    <value>© 2018 Microsoft. Tous droits réservés.</value>
-    <comment>Copyright statement, displayed on the About panel</comment>
+  <data name="AboutControlCopyright" xml:space="preserve">
+    <value>© %1 Microsoft. Tous droits réservés.</value>
+    <comment>{Locked="%1"}. Copyright statement, displayed on the About panel. %1 = the current year (4 digits)</comment>
   </data>
   <data name="AboutButton.Content" xml:space="preserve">
     <value>À propos de</value>
@@ -2412,9 +2460,9 @@
     <value>Différence</value>
     <comment>Difference result label</comment>
   </data>
-  <data name="Date_FromLabel.Text" xml:space="preserve">
-    <value>À partir de</value>
-    <comment>From Date label for Date Picker</comment>
+  <data name="DateDiff_FromHeader.Header" xml:space="preserve">
+    <value>Du</value>
+    <comment>From Date Header for Difference Date Picker</comment>
   </data>
   <data name="MonthsLabel.Text" xml:space="preserve">
     <value>Mois</value>
@@ -2424,9 +2472,9 @@
     <value>Soustraire</value>
     <comment>Subtract toggle button text</comment>
   </data>
-  <data name="Date_ToLabel.Text" xml:space="preserve">
-    <value>Vers</value>
-    <comment>To Date label for Date Picker</comment>
+  <data name="DateDiff_ToHeader.Header" xml:space="preserve">
+    <value>Au</value>
+    <comment>To Date Header for Difference Date Picker</comment>
   </data>
   <data name="YearsLabel.Text" xml:space="preserve">
     <value>Ans</value>
@@ -2601,7 +2649,7 @@
   </data>
   <data name="xorButton.[using:CalculatorApp.Controls]CalculatorButton.AuditoryFeedback" xml:space="preserve">
     <value>x ou</value>
-    <comment>Auditory feedback for Screen Reader users. Users will hear "Display is 7 x or" when the button is pressed. XOR is a mathematical operation on two binary values. Here the feedback is "x or" in order to get the correct pronounciation.</comment>
+    <comment>Auditory feedback for Screen Reader users. Users will hear "Display is 7 x or" when the button is pressed. XOR is a mathematical operation on two binary values. Here the feedback is "x or" in order to get the correct pronunciation.</comment>
   </data>
   <data name="andButton.[using:CalculatorApp.Controls]CalculatorButton.AuditoryFeedback" xml:space="preserve">
     <value>et</value>
@@ -2886,5 +2934,29 @@
   <data name="AboutControlServicesAgreement.Text" xml:space="preserve">
     <value>Contrat de services Microsoft</value>
     <comment>Displayed on a link to the Microsoft Services Agreement in the about this app information</comment>
+  </data>
+  <data name="UnitAbbreviation_Pyeong" xml:space="preserve">
+    <value>Pyeong</value>
+    <comment>An abbreviation for a measurement unit of area.</comment>
+  </data>
+  <data name="UnitName_Pyeong" xml:space="preserve">
+    <value>Pyeong</value>
+    <comment>A measurement unit for area.</comment>
+  </data>
+  <data name="AddSubtract_Date_FromHeader.Header" xml:space="preserve">
+    <value>Du</value>
+    <comment>From Date Header for AddSubtract Date Picker</comment>
+  </data>
+  <data name="CalculationResultScrollLeft.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Défilement à gauche du résultat du calcul</value>
+    <comment>Automation label for the "Scroll Left" button that appears when a calculation result is too large to fit in calculation result text box.</comment>
+  </data>
+  <data name="CalculationResultScrollRight.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Défilement à droite du résultat du calcul</value>
+    <comment>Automation label for the "Scroll Right" button that appears when a calculation result is too large to fit in calculation result text box.</comment>
+  </data>
+  <data name="CalculationFailed" xml:space="preserve">
+    <value>Échec du calcul</value>
+    <comment>Text displayed when the application is not able to do a calculation</comment>
   </data>
 </root>
